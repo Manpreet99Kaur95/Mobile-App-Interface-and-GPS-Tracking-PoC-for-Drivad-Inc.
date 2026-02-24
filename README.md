@@ -1,4 +1,4 @@
-# drivad_app
+# drivad
 
 A new Flutter project.
 
