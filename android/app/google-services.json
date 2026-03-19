@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "392701292758",
+    "project_id": "drivadnew",
+    "storage_bucket": "drivadnew.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392701292758:android:3be61e22a0d40ad7121977",
+        "android_client_info": {
+          "package_name": "com.example.drivad_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ9-dOL0oWNtweIqYXLkC8k42ljqkt040"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
