@@ -4,7 +4,7 @@ import '../language_provider.dart';
 import 'auth_service.dart';
 import 'login_page.dart';
 
-enum UserRole { driver, advertiser, vendor }
+enum UserRole { driver, advertiser }
 
 class RegisterPage extends StatefulWidget {
   final AuthService auth;
@@ -19,9 +19,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   // form state
   final _formKey = GlobalKey<FormState>();
+  final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _confirm = TextEditingController();
+  final _registerNumber = TextEditingController();
+  final _address = TextEditingController();
 
   bool _loading = false;
   bool _obscurePass = true;
@@ -31,9 +34,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
+    _name.dispose();
     _email.dispose();
     _password.dispose();
     _confirm.dispose();
+    _registerNumber.dispose();
+    _address.dispose();
     super.dispose();
   }
 
@@ -43,9 +49,12 @@ class _RegisterPageState extends State<RegisterPage> {
         return 'driver';
       case UserRole.advertiser:
         return 'advertiser';
-      case UserRole.vendor:
-        return 'vendor';
     }
+  }
+
+  String? _validateRequired(String? v, String label) {
+    if (v == null || v.trim().isEmpty) return '$label is required';
+    return null;
   }
 
   String? _validateEmail(String? v, LanguageProvider lp) {
@@ -83,6 +92,9 @@ class _RegisterPageState extends State<RegisterPage> {
         email: _email.text.trim(),
         password: _password.text,
         role: _roleToString(_role),
+        name: _name.text.trim(),
+        registerNumber: _registerNumber.text.trim(),
+        address: _address.text.trim(),
       );
       if (!mounted) return;
     } catch (e) {
@@ -209,16 +221,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: _RoleCard(
-                                  icon: Icons.sell,
-                                  label: lp.translate('vendor'),
-                                  selected: _role == UserRole.vendor,
-                                  onTap: () =>
-                                      setState(() => _role = UserRole.vendor),
-                                ),
-                              ),
                             ],
                           ),
 
@@ -228,6 +230,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             key: _formKey,
                             child: Column(
                               children: [
+                                _LabeledField(
+                                  label: lp.translate('name'),
+                                  child: TextFormField(
+                                    controller: _name,
+                                    decoration: InputDecoration(
+                                      hintText: lp.translate('name'),
+                                    ),
+                                    validator: (v) => _validateRequired(v, lp.translate('name')),
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
                                 _LabeledField(
                                   label: lp.translate('email'),
                                   child: TextFormField(
@@ -241,6 +254,30 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                 ),
                                 const SizedBox(height: 12),
+                                if (_role == UserRole.advertiser) ...[
+                                  _LabeledField(
+                                    label: lp.translate('register_number'),
+                                    child: TextFormField(
+                                      controller: _registerNumber,
+                                      decoration: InputDecoration(
+                                        hintText: lp.translate('register_number'),
+                                      ),
+                                      validator: (v) => _validateRequired(v, lp.translate('register_number')),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  _LabeledField(
+                                    label: lp.translate('address'),
+                                    child: TextFormField(
+                                      controller: _address,
+                                      decoration: InputDecoration(
+                                        hintText: lp.translate('address'),
+                                      ),
+                                      validator: (v) => _validateRequired(v, lp.translate('address')),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                ],
                                 _LabeledField(
                                   label: lp.translate('password'),
                                   child: TextFormField(

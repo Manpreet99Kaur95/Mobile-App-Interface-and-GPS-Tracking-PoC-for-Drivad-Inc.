@@ -177,12 +177,6 @@ class _AdvertiserDashboardPageState extends State<AdvertiserDashboardPage> {
                       (c.impressions.contains('k') ? value * 1000 : value);
                 });
 
-                final totalReach = campaigns.fold<int>(0, (total, c) {
-                  final reachString = c.reach.replaceAll(RegExp(r'[^\d]'), '');
-                  final value = int.tryParse(reachString) ?? 0;
-                  return total + (c.reach.contains('k') ? value * 1000 : value);
-                });
-
                 return LayoutBuilder(
                   builder: (context, c) {
                     final isWide = c.maxWidth >= 900;
@@ -201,110 +195,9 @@ class _AdvertiserDashboardPageState extends State<AdvertiserDashboardPage> {
                                   fontWeight: FontWeight.w900,
                                 ),
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                lp.translate('statistics'),
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface.withAlpha(150),
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
                               const SizedBox(height: 14),
 
-                              // Stats Cards with real data
-                              if (isWide)
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _StatCard(
-                                        title: lp.translate('active_campaigns'),
-                                        value: activeCampaigns.toString(),
-                                        icon: Icons.campaign,
-                                        iconBg: const Color(0xFFEAF2FF),
-                                        iconFg: const Color(0xFF2563EB),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: _StatCard(
-                                        title: lp.translate('total_spent'),
-                                        value:
-                                            '\$${totalSpent.toStringAsFixed(0)}',
-                                        icon: Icons.attach_money,
-                                        iconBg: const Color(0xFFE8F7EE),
-                                        iconFg: const Color(0xFF16A34A),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: _StatCard(
-                                        title: lp.translate('impressions'),
-                                        value:
-                                            '${(totalImpressions / 1000).toStringAsFixed(0)}k',
-                                        icon: Icons.visibility,
-                                        iconBg: const Color(0xFFF3E8FF),
-                                        iconFg: const Color(0xFF7C3AED),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: _StatCard(
-                                        title: lp.translate('reach'),
-                                        value:
-                                            '${(totalReach / 1000).toStringAsFixed(0)}k',
-                                        icon: Icons.people_alt,
-                                        iconBg: const Color(0xFFFFEDD5),
-                                        iconFg: const Color(0xFFEA580C),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              else
-                                Column(
-                                  children: [
-                                    _StatCard(
-                                      title: lp.translate('active_campaigns'),
-                                      value: activeCampaigns.toString(),
-                                      icon: Icons.campaign,
-                                      iconBg: const Color(0xFFEAF2FF),
-                                      iconFg: const Color(0xFF2563EB),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    _StatCard(
-                                      title: lp.translate('total_spent'),
-                                      value:
-                                          '\$${totalSpent.toStringAsFixed(0)}',
-                                      icon: Icons.attach_money,
-                                      iconBg: const Color(0xFFE8F7EE),
-                                      iconFg: const Color(0xFF16A34A),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    _StatCard(
-                                      title: lp.translate('impressions'),
-                                      value:
-                                          '${(totalImpressions / 1000).toStringAsFixed(0)}k',
-                                      icon: Icons.visibility,
-                                      iconBg: const Color(0xFFF3E8FF),
-                                      iconFg: const Color(0xFF7C3AED),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    _StatCard(
-                                      title: lp.translate('reach'),
-                                      value:
-                                          '${(totalReach / 1000).toStringAsFixed(0)}k',
-                                      icon: Icons.people_alt,
-                                      iconBg: const Color(0xFFFFEDD5),
-                                      iconFg: const Color(0xFFEA580C),
-                                    ),
-                                  ],
-                                ),
-
-                              const SizedBox(height: 16),
-
-                              // Campaigns Section with real data
+                              // Campaigns Section
                               _SectionCard(
                                 title: lp.translate('my_campaigns'),
                                 trailing: campaigns.isNotEmpty
@@ -391,6 +284,87 @@ class _AdvertiserDashboardPageState extends State<AdvertiserDashboardPage> {
                                         }).toList(),
                                       ),
                               ),
+
+                              const SizedBox(height: 24),
+                              Text(
+                                lp.translate('statistics'),
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withAlpha(150),
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+
+                              // Stats Cards
+                              if (isWide)
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _StatCard(
+                                        title: lp.translate('active_campaigns'),
+                                        value: activeCampaigns.toString(),
+                                        icon: Icons.campaign,
+                                        iconBg: const Color(0xFFEAF2FF),
+                                        iconFg: const Color(0xFF2563EB),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: _StatCard(
+                                        title: lp.translate('total_spent'),
+                                        value:
+                                            '\$${totalSpent.toStringAsFixed(0)}',
+                                        icon: Icons.attach_money,
+                                        iconBg: const Color(0xFFE8F7EE),
+                                        iconFg: const Color(0xFF16A34A),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: _StatCard(
+                                        title: lp.translate('impressions'),
+                                        value:
+                                            '${(totalImpressions / 1000).toStringAsFixed(0)}km',
+                                        icon: Icons.visibility,
+                                        iconBg: const Color(0xFFF3E8FF),
+                                        iconFg: const Color(0xFF7C3AED),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              else
+                                Column(
+                                  children: [
+                                    _StatCard(
+                                      title: lp.translate('active_campaigns'),
+                                      value: activeCampaigns.toString(),
+                                      icon: Icons.campaign,
+                                      iconBg: const Color(0xFFEAF2FF),
+                                      iconFg: const Color(0xFF2563EB),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    _StatCard(
+                                      title: lp.translate('total_spent'),
+                                      value:
+                                          '\$${totalSpent.toStringAsFixed(0)}',
+                                      icon: Icons.attach_money,
+                                      iconBg: const Color(0xFFE8F7EE),
+                                      iconFg: const Color(0xFF16A34A),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    _StatCard(
+                                      title: lp.translate('impressions'),
+                                      value:
+                                          '${(totalImpressions / 1000).toStringAsFixed(0)}km',
+                                      icon: Icons.visibility,
+                                      iconBg: const Color(0xFFF3E8FF),
+                                      iconFg: const Color(0xFF7C3AED),
+                                    ),
+                                  ],
+                                ),
                             ],
                           ),
                         ),
@@ -492,7 +466,7 @@ class _SectionCard extends StatelessWidget {
               title,
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900),
             ),
-            ?trailing,
+            if (trailing != null) trailing!,
           ],
         ),
         const SizedBox(height: 10),

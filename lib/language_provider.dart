@@ -90,11 +90,14 @@ class LanguageProvider with ChangeNotifier {
 
     // Advertiser Dashboard
     'total_spent': 'Total Spent',
-    'impressions': 'Impressions',
+    'impressions': 'Distance',
     'reach': 'Reach',
     'my_campaigns': 'My Campaigns',
     'open_campaigns': 'Open Campaigns',
     'view_analytics': 'View Analytics',
+    'business_info': 'Business Information',
+    'register_number': 'Register Number',
+    'address': 'Address',
 
     // Navigation
     'campaigns': 'Campaigns',
@@ -121,14 +124,14 @@ class LanguageProvider with ChangeNotifier {
 
     // Analytics Page
     'campaign_performance': 'Campaign Performance',
-    'impressions_reach_time': 'Impressions & Reach Over Time',
-    'avg_impressions': 'Average Impressions/Campaign',
+    'impressions_reach_time': 'Distance & Reach Over Time',
+    'avg_impressions': 'Average Distance/Campaign',
     'avg_reach': 'Average Reach/Campaign',
     'engagement_rate': 'Engagement Rate',
     'from_last_month': 'from last month',
 
     // Profile Page
-    'manage_profile_vehicle': 'Manage your profile and vehicle information',
+    'manage_profile_vehicle': 'Manage your profile and information',
     'personal_info': 'Personal Information',
     'name': 'Name',
     'phone': 'Phone',
@@ -137,6 +140,7 @@ class LanguageProvider with ChangeNotifier {
     'model': 'Model',
     'year': 'Year',
     'license_plate': 'License Plate',
+    'profile_updated': 'Profile updated successfully',
   };
 
   static const Map<String, String> _fr = {
@@ -205,11 +209,14 @@ class LanguageProvider with ChangeNotifier {
 
     // Advertiser Dashboard
     'total_spent': 'Total dépensé',
-    'impressions': 'Impressions',
+    'impressions': 'Distance',
     'reach': 'Portée',
     'my_campaigns': 'Mes campagnes',
     'open_campaigns': 'Campagnes ouvertes',
     'view_analytics': 'Voir les analyses',
+    'business_info': 'Informations sur l\'entreprise',
+    'register_number': 'Numéro d\'enregistrement',
+    'address': 'Adresse',
 
     // Navigation
     'campaigns': 'Campagnes',
@@ -236,15 +243,14 @@ class LanguageProvider with ChangeNotifier {
 
     // Analytics Page
     'campaign_performance': 'Performance de la campagne',
-    'impressions_reach_time': 'Impressions et portée au fil du temps',
-    'avg_impressions': 'Moyenne d\'impressions/campagne',
+    'impressions_reach_time': 'Distance et portée au fil du temps',
+    'avg_impressions': 'Moyenne d\'distance/campagne',
     'avg_reach': 'Portée moyenne/campagne',
     'engagement_rate': 'Taux d\'engagement',
     'from_last_month': 'par rapport au mois dernier',
 
     // Profile Page
-    'manage_profile_vehicle':
-        'Gérez votre profil et les informations de votre véhicule',
+    'manage_profile_vehicle': 'Gérez votre profil et vos informations',
     'personal_info': 'Informations personnelles',
     'name': 'Nom',
     'phone': 'Téléphone',
@@ -253,5 +259,6 @@ class LanguageProvider with ChangeNotifier {
     'model': 'Modèle',
     'year': 'Année',
     'license_plate': 'Plaque d\'immatriculation',
+    'profile_updated': 'Profil mis à jour avec succès',
   };
 }

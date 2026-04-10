@@ -28,6 +28,8 @@ class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController _modelController;
   late TextEditingController _yearController;
   late TextEditingController _plateController;
+  late TextEditingController _registerNumberController;
+  late TextEditingController _addressController;
 
   // User data
   Map<String, dynamic>? _userData;
@@ -49,6 +51,8 @@ class _ProfilePageState extends State<ProfilePage> {
     _modelController = TextEditingController();
     _yearController = TextEditingController();
     _plateController = TextEditingController();
+    _registerNumberController = TextEditingController();
+    _addressController = TextEditingController();
   }
 
   Future<void> _loadUserData() async {
@@ -81,6 +85,8 @@ class _ProfilePageState extends State<ProfilePage> {
     _modelController.text = _userData?['vehicleModel'] ?? '';
     _yearController.text = _userData?['vehicleYear']?.toString() ?? '';
     _plateController.text = _userData?['licensePlate'] ?? '';
+    _registerNumberController.text = _userData?['registerNumber'] ?? '';
+    _addressController.text = _userData?['address'] ?? '';
   }
 
   Future<void> _saveProfile() async {
@@ -98,6 +104,8 @@ class _ProfilePageState extends State<ProfilePage> {
         'vehicleModel': _modelController.text.trim(),
         'vehicleYear': int.tryParse(_yearController.text.trim()) ?? 0,
         'licensePlate': _plateController.text.trim(),
+        'registerNumber': _registerNumberController.text.trim(),
+        'address': _addressController.text.trim(),
         'email': _currentUser?.email,
         'updatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
@@ -155,6 +163,8 @@ class _ProfilePageState extends State<ProfilePage> {
     _modelController.dispose();
     _yearController.dispose();
     _plateController.dispose();
+    _registerNumberController.dispose();
+    _addressController.dispose();
     super.dispose();
   }
 
@@ -253,16 +263,37 @@ class _ProfilePageState extends State<ProfilePage> {
                             icon: Icons.phone,
                             keyboardType: TextInputType.phone,
                           ),
-                          _buildInfoField(
-                            label: lp.translate('license_number'),
-                            controller: _licenseController,
-                            isEditing: _isEditing,
-                            icon: Icons.badge,
-                          ),
+                          if (role == AppRole.driver)
+                            _buildInfoField(
+                              label: lp.translate('license_number'),
+                              controller: _licenseController,
+                              isEditing: _isEditing,
+                              icon: Icons.badge,
+                            ),
                         ],
                       ),
 
                       const SizedBox(height: 16),
+
+                      // Business Information Section (only for advertisers)
+                      if (role == AppRole.advertiser)
+                        _buildSection(
+                          title: lp.translate('business_info'),
+                          children: [
+                            _buildInfoField(
+                              label: lp.translate('register_number'),
+                              controller: _registerNumberController,
+                              isEditing: _isEditing,
+                              icon: Icons.app_registration,
+                            ),
+                            _buildInfoField(
+                              label: lp.translate('address'),
+                              controller: _addressController,
+                              isEditing: _isEditing,
+                              icon: Icons.location_on,
+                            ),
+                          ],
+                        ),
 
                       // Vehicle Information Section (only for drivers)
                       if (role == AppRole.driver)

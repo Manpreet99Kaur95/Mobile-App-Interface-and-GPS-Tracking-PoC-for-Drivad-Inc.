@@ -40,7 +40,10 @@ class AuthService {
   Future<UserCredential> register({
     required String email,
     required String password,
-    required String role, // driver / advertiser / vendor
+    required String role, // driver / advertiser
+    String? name,
+    String? registerNumber,
+    String? address,
   }) async {
     final cred = await _auth.createUserWithEmailAndPassword(
       email: email.trim(),
@@ -49,11 +52,23 @@ class AuthService {
 
     final uid = cred.user!.uid;
 
-    await _db.collection('users').doc(uid).set({
+    final userData = {
       'email': email.trim(),
       'role': role.toLowerCase(),
       'createdAt': FieldValue.serverTimestamp(),
-    });
+    };
+
+    if (name != null && name.isNotEmpty) userData['name'] = name;
+    if (registerNumber != null && registerNumber.isNotEmpty) {
+      userData['registerNumber'] = registerNumber;
+    }
+    if (address != null && address.isNotEmpty) userData['address'] = address;
+
+    await _db.collection('users').doc(uid).set(userData);
+
+    if (name != null && name.isNotEmpty) {
+      await cred.user!.updateDisplayName(name);
+    }
 
     return cred;
   }
