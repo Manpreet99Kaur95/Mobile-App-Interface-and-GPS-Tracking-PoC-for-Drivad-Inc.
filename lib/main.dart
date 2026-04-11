@@ -21,7 +21,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Map box token
-  MapboxOptions.setAccessToken('YOUR_MAPBOX_TOKEN');
+  MapboxOptions.setAccessToken('pk.eyJ1IjoiY2Fwc3RvbmUyMDI2IiwiYSI6ImNtbXd3MGVzdjJ2NjEycXB0ZnZ4M2hwMGQifQ.iat--fExYPGF9CHPkoKW3w');
 
   // Enable Edge-to-Edge mode
   SystemChrome.setSystemUIOverlayStyle(

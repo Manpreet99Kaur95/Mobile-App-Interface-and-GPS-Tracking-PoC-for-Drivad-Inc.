@@ -248,8 +248,13 @@ class _CampaignsPageState extends State<CampaignsPage> {
                           ),
                         ),
                         keyboardType: TextInputType.number,
-                        validator: (v) =>
-                            v?.isEmpty == true ? 'Required' : null,
+                        validator: (v) {
+                          if (v == null || v.isEmpty) return 'Required';
+                          final days = int.tryParse(v);
+                          if (days == null) return 'Invalid number';
+                          if (days < 30) return 'Must be at least 30 days';
+                          return null;
+                        },
                       ),
                     ),
                   ],
@@ -383,8 +388,13 @@ class _CampaignsPageState extends State<CampaignsPage> {
                             ),
                           ),
                           keyboardType: TextInputType.number,
-                          validator: (v) =>
-                              v?.isEmpty == true ? 'Required' : null,
+                          validator: (v) {
+                            if (v == null || v.isEmpty) return 'Required';
+                            final days = int.tryParse(v);
+                            if (days == null) return 'Invalid number';
+                            if (days < 30) return 'Must be at least 30 days';
+                            return null;
+                          },
                         ),
                       ),
                     ],

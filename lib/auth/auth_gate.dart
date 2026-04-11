@@ -26,6 +26,7 @@ class _AuthGateState extends State<AuthGate> {
     return StreamBuilder<User?>(
       stream: widget.auth.authStateChanges,
       builder: (context, snap) {
+        // 1. Check Auth State
         if (snap.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
@@ -34,18 +35,20 @@ class _AuthGateState extends State<AuthGate> {
 
         final user = snap.data;
 
+        // 2. If not logged in, show Login
         if (user == null) {
           _roleFuture = null;
           _currentUid = null;
           return LoginPage(auth: widget.auth);
         }
 
+        // 3. If logged in, fetch Role
         if (_currentUid != user.uid) {
           _currentUid = user.uid;
-
-          _roleFuture = widget.auth
-              .getOrCreateUserRole(user.uid)
-              .timeout(const Duration(seconds: 10), onTimeout: () => 'driver');
+          _roleFuture = widget.auth.getOrCreateUserRole(user.uid).timeout(
+            const Duration(seconds: 7),
+            onTimeout: () => throw 'Connection timeout. Check your internet.',
+          );
         }
 
         return FutureBuilder<String>(
@@ -57,32 +60,39 @@ class _AuthGateState extends State<AuthGate> {
               );
             }
 
+            // 4. Handle Errors (like timeout or No Internet)
             if (roleSnap.hasError) {
               return Scaffold(
                 body: Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(24),
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.error_outline, size: 50),
-                        const SizedBox(height: 12),
+                        const Icon(Icons.wifi_off, size: 64, color: Colors.red),
+                        const SizedBox(height: 16),
                         const Text(
-                          "Failed to load user role",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
+                          "Connection Issue",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           roleSnap.error.toString(),
                           textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.grey),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 24),
                         ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _currentUid = null; // Force retry
+                            });
+                          },
+                          child: const Text("Retry"),
+                        ),
+                        TextButton(
                           onPressed: () => widget.auth.logout(),
-                          child: const Text("Logout"),
+                          child: const Text("Back to Login"),
                         ),
                       ],
                     ),
@@ -91,15 +101,14 @@ class _AuthGateState extends State<AuthGate> {
               );
             }
 
+            // 5. Success -> Show Dashboard
             final role = (roleSnap.data ?? 'driver').toLowerCase();
 
             switch (role) {
               case 'advertiser':
                 return AdvertiserDashboardPage(auth: widget.auth);
-
               case 'vendor':
                 return VendorDashboardPage(auth: widget.auth);
-
               case 'driver':
               default:
                 return DriverDashboardPage(auth: widget.auth);
